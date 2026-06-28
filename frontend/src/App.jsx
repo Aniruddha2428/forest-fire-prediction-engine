@@ -23,6 +23,7 @@ const HISTORICAL_EXAMPLES = [
 ];
 
 function App() {
+  const apiBaseUrl = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8000' : 'https://forest-fire-prediction-engine.onrender.com');
   const [mode, setMode] = useState('live'); 
   const [locationName, setLocationName] = useState('');
   const [formData, setFormData] = useState({ Temperature: 35, Humidity: 30, Wind_Speed: 20, Rain: 0 });
@@ -36,7 +37,7 @@ function App() {
     setLoading(true);
     setResult(null);
     try {
-      const response = await fetch('http://localhost:8000/predict-realtime', {
+      const response = await fetch(`${apiBaseUrl}/predict-realtime`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ location_name: locationName })
@@ -56,7 +57,7 @@ function App() {
     setResult(null);
     const dataToSubmit = customData || formData;
     try {
-      const response = await fetch('http://localhost:8000/predict', {
+      const response = await fetch(`${apiBaseUrl}/predict`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dataToSubmit)
